@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'django_deo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-          'NAME': 'prodavnica',
+          'NAME': 'music_store',
           'HOST': 'localhost',
           'USER': 'root',
           'PASSWORD': 'password'
