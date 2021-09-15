@@ -11,6 +11,7 @@ class Vinyl(models.Model):
 class CD(models.Model):
     title = models.TextField()
     artist = models.TextField()
-
+    label = models.TextField()
+    
     def __str__(self):
         return self.title
