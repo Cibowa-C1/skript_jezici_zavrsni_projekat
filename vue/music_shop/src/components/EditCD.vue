@@ -84,7 +84,7 @@ export default {
       if (!this.$route.params.id)
         this.new_cd(cd);
       else
-        this.change_cd({id: this.$route.params.id, tel: cd});
+        this.change_cd({id: this.$route.params.id, ceedee: cd});
 
       this.newTitle = '';
       this.newArtist = '';

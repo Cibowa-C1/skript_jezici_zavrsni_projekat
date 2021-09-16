@@ -37,7 +37,7 @@
             ...mapActions(['delete_vinyl']),
 
             editVinyl: function (item, index, event) {
-                if(this.admin == false){
+                if(this.admin == true){
                   router.push({path: `/vinyl/${item.id}`});
                 }
 

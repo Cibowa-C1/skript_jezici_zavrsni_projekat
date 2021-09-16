@@ -15,6 +15,10 @@ export default new Vuex.Store({
 
   mutations: {
 
+    setUser: function (state, user) {
+      state.user = user;
+    },
+
     set_admin: function (state, admin){
       state.admin = admin;
     },
@@ -26,7 +30,7 @@ export default new Vuex.Store({
     },
 
     add_vinyl: function (state, vinyl) {
-      state.vinyl.push(vinyl);
+      state.vinyls.push(vinyl);
     },
 
     remove_vinyl: function (state, id) {
@@ -57,7 +61,7 @@ export default new Vuex.Store({
     },
 
     add_cd: function (state, cd) {
-      state.cd.push(cd);
+      state.cds.push(cd);
     },
 
     remove_cd: function (state, id) {
@@ -82,14 +86,14 @@ export default new Vuex.Store({
 },
 
 actions: {
-  isAdmin: function ({commit}) {
-    fetch('http://localhost:81/api/isAdmin', {
+  isAdmin: function ({commit},user) {
+    fetch('http://localhost:81/api/isAdmin/' + user, {
       method: 'get'
     }).then((response) => {
 
       return response.json();
     }).then((jsonData) => {
-      commit('setAdmin', jsonData)
+      commit('set_admin', jsonData)
     });
   },
   login: function ({commit}, user) {
@@ -102,7 +106,7 @@ actions: {
     }).then((response) => {
       if (!response.ok)
         throw response;
-
+      //logged = true;
       router.push('/home');
     }).then((jsonData) => {
       commit('setUser', jsonData);

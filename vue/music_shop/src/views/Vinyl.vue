@@ -14,8 +14,9 @@
             </b-row>
             <b-row>
                 <b-col cm="2" style="margin-top: 10px">
-                    <b-button variant="primary" size="lg" @click="toggleEdit" v-html="edit ? 'Cancel' : 'Edit'"/>
+                    <b-button v-if="admin==true" variant="primary" size="lg" @click="toggleEdit" v-html="edit ? 'Cancel' : 'Edit'"/>
                 </b-col>
+            </b-row>
             </b-row>
         </b-container>
     </div>
@@ -39,8 +40,9 @@
                 edit: false
             }
         },
+        
         computed: {
-            ...mapState(['vinyls']),
+            ...mapState(['vinyls','admin']),
 
             vinyl: function () {
                 for (let i = 0; i < this.vinyls.length; i++)

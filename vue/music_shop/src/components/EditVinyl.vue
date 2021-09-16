@@ -75,20 +75,22 @@ export default {
       });
       const vinyl = JSON.stringify({title: this.newTitle, artist: this.newArtist, label: this.newLabel});
       let { error } = Joi.validate(vinyl, sema);
-
+      
       if(error){
         alert(error.details[0].message);
         return;
       }
-
+      
       if (!this.$route.params.id)
         this.new_vinyl(vinyl);
+        
       else
-        this.change_vinyl({id: this.$route.params.id, tel: vinyl});
-
+        this.change_vinyl({id: this.$route.params.id, vinyl: vinyl});
+      
       this.newTitle = '';
       this.newArtist = '';
       this.newLabel = '';
+      
     }
   }
 }

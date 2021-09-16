@@ -3,7 +3,7 @@
       <Header/>
       <b-container>
         <b-row class="mt-2">
-            <b-button v-if="admin==false" variant="primary" size="lg" @click="newVinyl">New Vinyl</b-button>
+            <b-button v-if="admin==true" variant="primary" size="lg" @click="newVinyl">New Vinyl</b-button>
         </b-row>
         <b-row>
           <b-col cm="6" >
@@ -14,7 +14,7 @@
       <b-container>
         <HeaderT/>
         <b-row class="mt-2">
-          <b-button v-if="admin==false" variant="primary" size="lg" @click="newCD">New CD</b-button>
+          <b-button v-if="admin==true" variant="primary" size="lg" @click="newCD">New CD</b-button>
         </b-row>
         <b-row>
           <b-col cm="6" >

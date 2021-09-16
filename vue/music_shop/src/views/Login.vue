@@ -33,7 +33,7 @@ export default {
         alert(error);
       }else{
         this.login(msg);
-        this.isAdmin();
+        this.isAdmin(this.username);
       }
     }
   }

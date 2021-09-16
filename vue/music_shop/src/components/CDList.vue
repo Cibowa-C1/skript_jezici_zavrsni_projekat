@@ -7,8 +7,8 @@
         :fields="fields"
         head-variant="light"
         @row-clicked="editCD">
-      <template v-slot:cell(delete)="row">
-        <b-button v-if="admin == false" variant="danger" @click="delete_cd(row.item.id)">Delete</b-button>
+      <template v-if="admin==true" v-slot:cell(delete)="row">
+          <b-button variant="danger" @click="delete_cd(row.item.id)">Delete</b-button>
       </template>
     </b-table>
     <h1 v-else>No CDs to show</h1>
@@ -37,7 +37,7 @@ export default {
     ...mapActions(['delete_cd']),
 
     editCD: function (item, index, event) {
-      if(this.admin == false){
+      if(this.admin == true){
         router.push({path: `/cd/${item.id}`});
       }
 

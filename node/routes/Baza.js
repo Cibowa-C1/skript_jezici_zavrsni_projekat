@@ -26,6 +26,9 @@ const sema = Joi.object().keys({
     label: Joi.string().trim().required(),
 });
 
+const usrnmVal = Joi.object().keys({
+    username : Joi.string().min(2).max(40).required()
+});
 
 const link = Joi.object().keys({
     id: Joi.number().min(1).max(50).required()
@@ -47,8 +50,28 @@ async function hashPassword(password) {
     console.log(hash)
 }
 
-route.get('/isAdmin',(req ,res)=>{
-    res.send(admin);
+route.get('/isAdmin/:username',(req ,res)=>{
+    let {error} = Joi.validate(req.params, usrnmVal);
+    console.log(req.params.username);
+    if(error){
+        res.status(400).send(error.details[0].message);
+    }else {
+        let query = 'select * from users where username=?';
+        let formated = mysql.format(query, [req.params.username]);
+
+        pool.query(formated, (err, rows) => {
+            if (err)
+                res.status(500).send(err.sqlMessage);
+            else
+                if (rows[0].admin==1){
+                    admin = true;
+                    res.send(true);
+                }else{
+                    admin = false;
+                    res.send(false);
+                }
+        });
+    }
 });
 
 route.post('/register',jsonParser, (req,res)=>{
@@ -60,7 +83,7 @@ route.post('/register',jsonParser, (req,res)=>{
         let query = "insert into users (username,password,admin) values (?,?,?)";
         let salt = bcrypt.genSaltSync(10);
         let hash = bcrypt.hashSync(req.body.password,salt);
-        let formated = mysql.format(query, [req.body.username,hash, 0]);
+        let formated = mysql.format(query, [req.body.username,hash, false]);
         pool.query(formated, (err, response) => {
             if (err)
                 res.status(500).send(err.sqlMessage);

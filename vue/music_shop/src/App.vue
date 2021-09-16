@@ -15,9 +15,6 @@
         methods: {
             ...mapActions(['load_vinyls','load_cds'])
         },
-        computed: {
-            ...mapState(['logged'])
-        },
         mounted: function() {
             this.load_vinyls();
             this.load_cds();
