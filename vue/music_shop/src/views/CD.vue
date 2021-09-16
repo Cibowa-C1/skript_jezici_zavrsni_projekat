@@ -14,7 +14,7 @@
             </b-row>
             <b-row>
                 <b-col cm="2" style="margin-top: 10px">
-                    <b-button variant="primary" size="lg" @click="toggleEdit" v-html="edit ? 'Cancel' : 'Edit'"/>
+                    <b-button v-if="admin==true" variant="primary" size="lg" @click="toggleEdit" v-html="edit ? 'Cancel' : 'Edit'"/>
                 </b-col>
             </b-row>
         </b-container>
@@ -40,7 +40,7 @@
             }
         },
         computed: {
-            ...mapState(['cds']),
+            ...mapState(['cds','admin']),
 
             cd: function () {
                 for (let i = 0; i < this.cds.length; i++)
