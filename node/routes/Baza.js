@@ -52,93 +52,67 @@ route.get('/isAdmin',(req ,res)=>{
 });
 
 route.post('/register',jsonParser, (req,res)=>{
-    let { error } = userSema.validate(req.body);
-    if (error){
-        console.log(error)
+    let { error } = Joi.validate(req.body, userSema);
+    if (error)
         res.status(400).send(error.details[0].message);
-    }else{
-        const name = req.body.username;
-        var password= req.body.password;
 
-        let errors = [];
+    else {
+        let query = "insert into users (username,password,admin) values (?,?,?)";
+        let salt = bcrypt.genSaltSync(10);
+        let hash = bcrypt.hashSync(req.body.password,salt);
+        let formated = mysql.format(query, [req.body.username,hash, 0]);
+        pool.query(formated, (err, response) => {
+            if (err)
+                res.status(500).send(err.sqlMessage);
+            else {
+                query = 'select * from users where id=?';
+                formated = mysql.format(query, [response.insertId]);
 
-        if(!name  || !password  ){
-            errors.push({msg: 'Please fill in all the fields'});
-            res.send({message:'Please fill in all the fields'});
-        }
-        if(errors.length>0){
-
-        }else{
-            if(name){
-                pool.query('SELECT * FROM users WHERE username = ?', [name],
-                    (error, results, fields)=>{
-                        if (results.length>0){
-                            res.send('username exists');
-                            alert('Username exists');
-                        }else{
-                            res.send('Reg success')
-                            bcrypt.hash(password, 5, (err, hash)=> {
-                                if(err)throw err;
-                                password = hash;
-                                pool.query('INSERT INTO users(username, password, admin) VALUES(?,?,?)',
-                                    [name,password,0]);
-                            });
-
-                        }
-
-                    });
-            }else{
-                res.send('Enter Email');
-            };
-        }
+                pool.query(formated, (err, rows) => {
+                    if (err)
+                        res.status(500).send(err.sqlMessage);
+                    else
+                        res.send(rows[0]);
+                });
+            }
+        });
     }
 
 });
 route.post('/login',jsonParser, (req, res)=> {
-    let { error } = loginSema.validate(req.body);
-    console.log(req.body.username)
-    console.log(req.body.password)
-    if (error){
-        res.status(400).send(error.details[0].message);
-    }else {
-        const username = req.body.username;
-        const password = req.body.password;
+    let { error } = Joi.validate(req.body, loginSema);
 
-        if (username && password) {
-            pool.query('SELECT * FROM users WHERE username = ?', [username],
-                (error, results, fields) => {
-                    if(error || results.length == 0) {
-                        res.send('There is no user with this username');
-                        alert('There is no user with this username');
-                        res.end();
-                    }
-                    var ad = results[0].Admin;
-                    console.log(ad);
-                    console.log(results[0]);
-                    pass = results[0].Password;
-                    if(ad != 0){
-                        console.log('admin');
-                        if(pass == password){
+    if (error)
+        res.status(400).send(error.details[0].message);
+
+    else {
+        let query = 'select * from users where username=?';
+        let formated = mysql.format(query, [req.body.username]);
+
+        pool.query(formated, (err, rows) => {
+            if (err)
+                res.status(500).send(err.sqlMessage);
+            else{
+                if (rows.length == 0){
+                    res.status(400);
+                }
+                else{
+                    const valPassword = bcrypt.compareSync(req.body.password,rows[0].password);
+                    if (valPassword){
+                        if (rows[0].admin==1){
                             admin = true;
-                            console.log('admin true');
-                            res.send(results[0]);
-                            return;
+                            res.send(rows[0]);
+                        }else{
+                            admin = false;
+                            res.send(rows[0]);
                         }
-                    }
-                    if (bcrypt.compareSync(password, pass)) {
-                        console.log('false');
-                        admin = false;
-                        res.send(results[0]);
-                    } else {
-                        console.log('false2');
-                        res.send('Incorrect Email and/or Password!');
-                    }
-                    res.end();
-                });
-        } else {
-            res.send('Please enter Username and Password!');
-            res.end();
-        }
+                    }else
+                    res.status(400);
+                }
+            }
+                
+
+        });
     }
 });
 
@@ -146,8 +120,8 @@ route.post('/login',jsonParser, (req, res)=> {
 route.use(express.json());
 
 
-route.get('/cd', (req, res) => {
-    pool.query('select * from cd', (err, rows) => {
+route.get('/cds', (req, res) => {
+    pool.query('select * from app_cd', (err, rows) => {
         if (err)
             res.status(500).send(err.sqlMessage);
         else
@@ -163,14 +137,14 @@ route.post('/cd', (req, res) => {
         res.status(400).send(error.details[0].message);
 
     else {
-        let query = "insert into cd (title, artist, label) values (?, ?, ?)";
+        let query = "insert into app_cd (title, artist, label) values (?, ?, ?)";
         let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.label]);
 
         pool.query(formated, (err, response) => {
             if (err)
                 res.status(500).send(err.sqlMessage);
             else {
-                query = 'select * from cd where id=?';
+                query = 'select * from app_cd where id=?';
                 formated = mysql.format(query, [response.insertId]);
 
                 pool.query(formated, (err, rows) => {
@@ -190,7 +164,7 @@ route.get('/cd/:id', (req, res) => {
     if(error){
         res.status(400).send(error.details[0].message);
     }else {
-        let query = 'select * from cd where id=?';
+        let query = 'select * from app_cd where id=?';
         let formated = mysql.format(query, [req.params.id]);
 
         pool.query(formated, (err, rows) => {
@@ -216,14 +190,14 @@ route.put('/cd/:id', (req, res) => {
             res.status(400).send(error.details[0].message);
         }
         else {
-            let query = "update cd set title=?, artist=?, label = ? where id=?";
+            let query = "update app_cd set title=?, artist=?, label = ? where id=?";
             let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.label, req.params.id]);
 
             pool.query(formated, (err, response) => {
                 if (err)
                     res.status(500).send(err.sqlMessage);
                 else {
-                    query = 'select * from cd where id=?';
+                    query = 'select * from app_cd where id=?';
                     formated = mysql.format(query, [req.params.id]);
 
                     pool.query(formated, (err, rows) => {
@@ -246,7 +220,7 @@ route.delete('/cd/:id', (req, res) => {
         res.status(400).send(error.details[0].message);
     else
     {
-        let query = 'select * from cd where id=?';
+        let query = 'select * from app_cd where id=?';
         let formated = mysql.format(query, [req.params.id]);
 
         pool.query(formated, (err, rows) => {
@@ -255,7 +229,7 @@ route.delete('/cd/:id', (req, res) => {
             else {
                 let cd_disk = rows[0];
 
-                let query = 'delete from cd where id=?';
+                let query = 'delete from app_cd where id=?';
                 let formated = mysql.format(query, [req.params.id]);
 
                 pool.query(formated, (err, rows) => {
@@ -270,11 +244,11 @@ route.delete('/cd/:id', (req, res) => {
 });
 
 
-//////TABLETI
+//////Vinyl
 
 
-route.get('/vinyl', (req, res) => {
-    pool.query('select * from vinyl', (err, rows) => {
+route.get('/vinyls', (req, res) => {
+    pool.query('select * from app_vinyl', (err, rows) => {
         if (err)
             res.status(500).send(err.sqlMessage);
         else
@@ -290,14 +264,14 @@ route.post('/vinyl', (req, res) => {
         res.status(400).send(error.details[0].message);
 
     else {
-        let query = "insert into tableti (title, artist, label) values (?, ?, ?)";
+        let query = "insert into app_vinyl (title, artist, label) values (?, ?, ?)";
         let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.label]);
 
         pool.query(formated, (err, response) => {
             if (err)
                 res.status(500).send(err.sqlMessage);
             else {
-                query = 'select * from vinyl where id=?';
+                query = 'select * from app_vinyl where id=?';
                 formated = mysql.format(query, [response.insertId]);
 
                 pool.query(formated, (err, rows) => {
@@ -317,7 +291,7 @@ route.get('/vinyl/:id', (req, res) => {
     if(error){
         res.status(400).send(error.details[0].message);
     }else {
-        let query = 'select * from vinyl where id=?';
+        let query = 'select * from app_vinyl where id=?';
         let formated = mysql.format(query, [req.params.id]);
 
         pool.query(formated, (err, rows) => {
@@ -343,14 +317,14 @@ route.put('/vinyl/:id', (req, res) => {
             res.status(400).send(error.details[0].message);
         }
         else {
-            let query = "update vinyl set title=?, artist=?, label = ? where id=?";
+            let query = "update app_vinyl set title=?, artist=?, label = ? where id=?";
             let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.label, req.params.id]);
 
             pool.query(formated, (err, response) => {
                 if (err)
                     res.status(500).send(err.sqlMessage);
                 else {
-                    query = 'select * from vinyl where id=?';
+                    query = 'select * from app_vinyl where id=?';
                     formated = mysql.format(query, [req.params.id]);
 
                     pool.query(formated, (err, rows) => {
@@ -373,7 +347,7 @@ route.delete('/vinyl/:id', (req, res) => {
         res.status(400).send(error.details[0].message);
     else
     {
-        let query = 'select * from vinyl where id=?';
+        let query = 'select * from app_vinyl where id=?';
         let formated = mysql.format(query, [req.params.id]);
 
         pool.query(formated, (err, rows) => {
@@ -382,7 +356,7 @@ route.delete('/vinyl/:id', (req, res) => {
             else {
                 let vinyl_disk = rows[0];
 
-                let query = 'delete from vinyl where id=?';
+                let query = 'delete from app_vinyl where id=?';
                 let formated = mysql.format(query, [req.params.id]);
 
                 pool.query(formated, (err, rows) => {

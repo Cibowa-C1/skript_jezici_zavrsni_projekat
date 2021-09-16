@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const musicCDV = require('./routes/Baza');
+const disks = require('./routes/Baza.js');
 
 let port = 81;
 const history = require('connect-history-api-fallback');
@@ -14,15 +14,15 @@ app.use(function(req, res, next) {
 });
 
 
-app.use('/api', musicCDV);
+app.use('/api', disks);
 
 
-const staticMiddleware = express.static(path.join(__dirname, 'dist'));
+//const staticMiddleware = express.static(path.join(__dirname, 'dist'));
 
 
 
-app.use(staticMiddleware);
+//app.use(staticMiddleware);
 app.use(history());
-app.use(staticMiddleware);
+//app.use(staticMiddleware);
 
 app.listen(port);

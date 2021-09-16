@@ -1,14 +1,33 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div id="app">
+    <div id="nav">
+      <div><router-link v-if="logged == true" to="/home">Home</router-link></div>
+    </div>
+    <router-view/>
   </div>
-  <router-view/>
 </template>
+
+<script>
+    import { mapActions } from 'vuex';
+
+    export default {
+        name: "App",
+        methods: {
+            ...mapActions(['load_vinyls','load_cds'])
+        },
+        computed: {
+            ...mapState(['logged'])
+        },
+        mounted: function() {
+            this.load_vinyls();
+            this.load_cds();
+        }
+    }
+</script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
