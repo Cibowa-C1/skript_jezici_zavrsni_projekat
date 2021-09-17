@@ -3,7 +3,7 @@ from django.db import models
 class Vinyl(models.Model):
     title = models.TextField()
     artist = models.TextField()
-    label = models.TextField()
+    rating = models.TextField()
 
     def __str__(self):
         return self.title + ': ' + self.artist
@@ -11,7 +11,7 @@ class Vinyl(models.Model):
 class CD(models.Model):
     title = models.TextField()
     artist = models.TextField()
-    label = models.TextField()
+    rating = models.TextField()
     
     def __str__(self):
-        return self.title
+        return self.title + ' - ' + self.artist

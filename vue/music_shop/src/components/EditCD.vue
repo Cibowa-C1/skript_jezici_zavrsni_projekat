@@ -13,7 +13,7 @@
 
       <b-row class = "mt-2">
         <b-col sm="2" offset="2">
-          <b-input v-model="newLabel" class="mb-2 mr-sm-2 mb-sm-0" placeholder="Label"></b-input>
+          <b-input v-model="newRating" class="mb-2 mr-sm-2 mb-sm-0" placeholder="Rating"></b-input>
         </b-col>
       </b-row>
 
@@ -41,7 +41,7 @@ export default {
       type: String,
       default: ''
     },
-    label: {
+    rating: {
       type: String,
       default: ''
     }
@@ -50,13 +50,13 @@ export default {
     return {
       newTitle: '',
       newArtist: '',
-      newLabel: ''
+      newRating: ''
     }
   },
   mounted: function () {
     this.newTitle = this.title;
     this.newArtist = this.artist;
-    this.newLabel = this.label;
+    this.newRating = this.rating;
   },
   methods: {
     ...mapActions(['new_cd', 'change_cd']),
@@ -67,13 +67,13 @@ export default {
       const sema = Joi.object().keys({
         title: Joi.string().trim().required(),
         artist: Joi.string().trim().required(),
-        label: Joi.string().trim().required()
+        rating: Joi.string().trim().required()
       });
 
       const link = Joi.object().keys({
         id: Joi.number().min(1).max(50).required()
       });
-      const cd = JSON.stringify({title: this.newTitle, artist: this.newArtist, label: this.newLabel});
+      const cd = JSON.stringify({title: this.newTitle, artist: this.newArtist, rating: this.newRating});
       let { error } = Joi.validate(cd, sema);
 
       if(error){
@@ -88,7 +88,7 @@ export default {
 
       this.newTitle = '';
       this.newArtist = '';
-      this.newLabel =  '';
+      this.newRating =  '';
 
       router.push({path: `/home`});
     }

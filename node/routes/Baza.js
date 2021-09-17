@@ -23,7 +23,7 @@ const bcrypt = require('bcrypt');
 const sema = Joi.object().keys({
     title: Joi.string().trim().required(),
     artist: Joi.string().trim().required(),
-    label: Joi.string().trim().required(),
+    rating: Joi.string().trim().required(),
 });
 
 const usrnmVal = Joi.object().keys({
@@ -161,8 +161,8 @@ route.post('/cd', (req, res) => {
         res.status(400).send(error.details[0].message);
 
     else {
-        let query = "insert into app_cd (title, artist, label) values (?, ?, ?)";
-        let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.label]);
+        let query = "insert into app_cd (title, artist, rating) values (?, ?, ?)";
+        let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.rating]);
 
         pool.query(formated, (err, response) => {
             if (err)
@@ -214,8 +214,8 @@ route.put('/cd/:id', (req, res) => {
             res.status(400).send(error.details[0].message);
         }
         else {
-            let query = "update app_cd set title=?, artist=?, label = ? where id=?";
-            let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.label, req.params.id]);
+            let query = "update app_cd set title=?, artist=?, rating = ? where id=?";
+            let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.rating, req.params.id]);
 
             pool.query(formated, (err, response) => {
                 if (err)
@@ -288,8 +288,8 @@ route.post('/vinyl', (req, res) => {
         res.status(400).send(error.details[0].message);
 
     else {
-        let query = "insert into app_vinyl (title, artist, label) values (?, ?, ?)";
-        let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.label]);
+        let query = "insert into app_vinyl (title, artist, rating) values (?, ?, ?)";
+        let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.rating]);
 
         pool.query(formated, (err, response) => {
             if (err)
@@ -342,8 +342,8 @@ route.put('/vinyl/:id', (req, res) => {
         }
         else {
             console.log(req.body.title + "BEKIC")
-            let query = "update app_vinyl set title=?, artist=?, label = ? where id=?";
-            let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.label, req.params.id]);
+            let query = "update app_vinyl set title=?, artist=?, rating = ? where id=?";
+            let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.rating, req.params.id]);
 
             pool.query(formated, (err, response) => {
                 if (err)

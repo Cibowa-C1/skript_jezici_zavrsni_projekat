@@ -47,7 +47,7 @@ export default new Vuex.Store({
         if (state.vinyls[m].id === parseInt(payload.id)) {
           state.vinyls[m].title = payload.vinyl.title;
           state.vinyls[m].artist = payload.vinyl.artist;
-          state.vinyls[m].label = payload.vinyl.label;
+          state.vinyls[m].rating = payload.vinyl.rating;
           break;
         }
       }
@@ -78,7 +78,7 @@ export default new Vuex.Store({
         if (state.cds[m].id === parseInt(payload.id)) {
           state.cds[m].title = payload.cds.title;
           state.cds[m].artist = payload.cds.artist;
-          state.cds[m].label = payload.cds.label;
+          state.cds[m].rating = payload.cds.rating;
           break;
         }
       }
@@ -214,8 +214,6 @@ actions: {
   },
 
   change_vinyl: function ({commit}, payload) {
-    console.log(payload.id + "\n")
-    console.log(payload.vin + "AAAAAAAAA")
     fetch('http://localhost:81/api/vinyl/' + payload.id, {
       method: 'put',
       headers: {

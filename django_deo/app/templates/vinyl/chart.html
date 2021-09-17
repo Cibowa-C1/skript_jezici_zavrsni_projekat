@@ -10,10 +10,10 @@
         var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: [{% for item in qs %}'{{item.title}}',{% endfor %}],
+        labels: [{% for item in qs %}'{{item}}',{% endfor %}],
         datasets: [{
-            label: 'vinyl',
-            data: [{% for item in qs %}'{{item.artist}}',{% endfor %}],
+            label: 'Vinyl',
+            data: [{% for item in qs %}'{{item.rating}}',{% endfor %}],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

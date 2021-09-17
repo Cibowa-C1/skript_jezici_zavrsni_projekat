@@ -4,7 +4,7 @@
         <tr>
           <th scope="col">Title</th>
           <th scope="col">Artist</th>
-         <th scope="col">Label</th>
+         <th scope="col">Rating /100</th>
          <th scope="col"></th>
        </tr>
       </thead>
@@ -18,7 +18,7 @@
             {{ vinyl.artist }}
           </td>
           <td @click="editVinyl(vinyl)">
-            {{ vinyl.label }}
+            {{ vinyl.rating }}
           </td>
           <td>
             <button v-if="admin==true" @click="delete_vinyl(vinyl.id)" type="button" class="btn btn-danger">Delete</button>
@@ -42,7 +42,7 @@
                 fields: [
                     { key: 'title' },
                     { key: 'artist' },
-                    { key: 'label' }
+                    { key: 'rating' }
                 ]
             }
         },
