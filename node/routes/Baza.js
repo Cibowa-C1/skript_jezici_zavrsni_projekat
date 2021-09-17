@@ -52,7 +52,6 @@ async function hashPassword(password) {
 
 route.get('/isAdmin/:username',(req ,res)=>{
     let {error} = Joi.validate(req.params, usrnmVal);
-    console.log(req.params.username);
     if(error){
         res.status(400).send(error.details[0].message);
     }else {
@@ -341,7 +340,6 @@ route.put('/vinyl/:id', (req, res) => {
             res.status(400).send(error.details[0].message);
         }
         else {
-            console.log(req.body.title + "BEKIC")
             let query = "update app_vinyl set title=?, artist=?, rating = ? where id=?";
             let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.rating, req.params.id]);
 
