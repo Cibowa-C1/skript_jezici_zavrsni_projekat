@@ -19,7 +19,7 @@
 
       <b-row class = "mt-2">
         <b-col sm="1">
-          <b-button variant="primary" size="lg" @click="addNew">Save</b-button>
+          <b-button variant="secondary" size="lg" @click="addNew">Save</b-button>
         </b-col>
       </b-row>
     </b-form>
@@ -28,7 +28,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-
+import router from "@/router";
 
 export default {
   name: "EditCD",
@@ -89,6 +89,8 @@ export default {
       this.newTitle = '';
       this.newArtist = '';
       this.newLabel =  '';
+
+      router.push({path: `/home`});
     }
   }
 }

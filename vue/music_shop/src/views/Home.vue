@@ -2,8 +2,8 @@
   <div class="home">
       <Header/>
       <b-container>
-        <b-row class="mt-2">
-            <b-button v-if="admin==true" variant="primary" size="lg" @click="newVinyl">New Vinyl</b-button>
+        <b-row class="p-3">
+            <b-button v-if="admin==true" variant="secondary" size="lg" @click="newVinyl">New Vinyl</b-button>
         </b-row>
         <b-row>
           <b-col cm="6" >
@@ -13,16 +13,16 @@
       </b-container>
       <b-container>
         <HeaderT/>
-        <b-row class="mt-2">
-          <b-button v-if="admin==true" variant="primary" size="lg" @click="newCD">New CD</b-button>
+        <b-row class="p-3">
+          <b-button v-if="admin==true" variant="secondary" size="lg" @click="newCD">New CD</b-button>
         </b-row>
         <b-row>
           <b-col cm="6" >
             <CDList/>
           </b-col>
         </b-row>
-        <b-row>
-          <b-button  variant="primary" size="lg" @click="logOut">Log Out</b-button>
+        <b-row class="p-3">
+          <b-button  variant="secondary" size="lg" @click="logOut">Log Out</b-button>
         </b-row>
       </b-container>
   </div>

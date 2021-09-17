@@ -19,16 +19,17 @@
 
       <b-row class = "mt-2">
         <b-col sm="1">
-          <b-button variant="primary" size="lg" @click="addNew">Save</b-button>
+          <b-button variant="secondary" size="lg" @click="addNew">Save</b-button>
         </b-col>
       </b-row>
+
     </b-form>
   </b-container>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-
+import router from "@/router";
 
 export default {
   name: "EditVinyl",
@@ -61,37 +62,36 @@ export default {
   methods: {
     ...mapActions(['new_vinyl', 'change_vinyl']),
 
-    addNew: function() {
-      const Joi = require('joi');
+            addNew: function() {
+              const Joi = require('joi');
 
-      const sema = Joi.object().keys({
-        title: Joi.string().trim().required(),
-        artist: Joi.string().trim().required(),
-        label: Joi.string().trim().required()
-      });
+              const sema = Joi.object().keys({
+                title: Joi.string().trim().required(),
+                artist: Joi.string().trim().required(),
+                label: Joi.string().trim().required(),
+              });
 
-      const link = Joi.object().keys({
-        id: Joi.number().min(1).max(50).required()
-      });
-      const vinyl = JSON.stringify({title: this.newTitle, artist: this.newArtist, label: this.newLabel});
-      let { error } = Joi.validate(vinyl, sema);
-      
-      if(error){
-        alert(error.details[0].message);
-        return;
-      }
-      
-      if (!this.$route.params.id)
-        this.new_vinyl(vinyl);
-        
-      else
-        this.change_vinyl({id: this.$route.params.id, vinyl: vinyl});
-      
-      this.newTitle = '';
-      this.newArtist = '';
-      this.newLabel = '';
-      
-    }
+              const link = Joi.object().keys({
+                id: Joi.number().min(1).max(50).required()
+              });
+                const vinyl = JSON.stringify({title: this.newTitle, artist: this.newArtist, label: this.newLabel});
+                let { error } = Joi.validate(vinyl, sema);
+
+                if(error){
+                    alert(error.details[0].message);
+                  return;
+                }
+
+                if (!this.$route.params.id)
+                    this.new_vinyl(vinyl);
+                else
+                    this.change_vinyl({id: this.$route.params.id, vin: vinyl});
+
+                this.newTitle = '';
+                this.newArtist = '';
+                this.newLabel = '';
+                router.push({path: `/home`});
+            }
   }
 }
 </script>

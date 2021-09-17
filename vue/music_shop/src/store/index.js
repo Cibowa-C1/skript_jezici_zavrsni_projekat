@@ -214,6 +214,8 @@ actions: {
   },
 
   change_vinyl: function ({commit}, payload) {
+    console.log(payload.id + "\n")
+    console.log(payload.vin + "AAAAAAAAA")
     fetch('http://localhost:81/api/vinyl/' + payload.id, {
       method: 'put',
       headers: {

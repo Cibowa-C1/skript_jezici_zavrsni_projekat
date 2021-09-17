@@ -14,9 +14,13 @@
             </b-row>
             <b-row>
                 <b-col cm="2" style="margin-top: 10px">
-                    <b-button v-if="admin==true" variant="primary" size="lg" @click="toggleEdit" v-html="edit ? 'Cancel' : 'Edit'"/>
+                    <b-button v-if="admin==true" variant="secondary" size="lg" @click="toggleEdit" v-html="edit ? 'Cancel' : 'Edit'"/>
                 </b-col>
             </b-row>
+            <b-row>
+                <b-col cm="2" style="margin-top: 10px">
+                    <b-button v-if="admin==true" variant="secondary" size="lg" @click="cancelAction">Home</b-button>
+                </b-col>
             </b-row>
         </b-container>
     </div>
@@ -27,7 +31,7 @@
     import Header from "@/components/Header";
     import ShowVinyl from "@/components/ShowVinyl";
     import { mapState, mapActions } from 'vuex';
-
+    import router from "@/router";
     export default {
         name: 'Vinyl',
         components: {
@@ -55,7 +59,10 @@
 
             toggleEdit: function () {
                 this.edit = !this.edit
-            }
+            },
+            cancelAction: function () {
+                router.push({path: `/home`});
+            } 
         }
     }
 </script>

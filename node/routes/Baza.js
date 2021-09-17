@@ -74,6 +74,7 @@ route.get('/isAdmin/:username',(req ,res)=>{
     }
 });
 
+
 route.post('/register',jsonParser, (req,res)=>{
     let { error } = Joi.validate(req.body, userSema);
     if (error)
@@ -340,6 +341,7 @@ route.put('/vinyl/:id', (req, res) => {
             res.status(400).send(error.details[0].message);
         }
         else {
+            console.log(req.body.title + "BEKIC")
             let query = "update app_vinyl set title=?, artist=?, label = ? where id=?";
             let formated = mysql.format(query, [req.body.title, req.body.artist, req.body.label, req.params.id]);
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Header/>
+        <HeaderT/>
         <b-container>
             <b-row>
                 <b-col cm="6" >
@@ -14,7 +14,12 @@
             </b-row>
             <b-row>
                 <b-col cm="2" style="margin-top: 10px">
-                    <b-button v-if="admin==true" variant="primary" size="lg" @click="toggleEdit" v-html="edit ? 'Cancel' : 'Edit'"/>
+                    <b-button v-if="admin==true" variant="secondary" size="lg" @click="toggleEdit" v-html="edit ? 'Cancel' : 'Edit'"/>
+                </b-col>
+            </b-row>
+            <b-row>
+                <b-col cm="2" style="margin-top: 10px">
+                    <b-button v-if="admin==true" variant="secondary" size="lg" @click="cancelAction">Home</b-button>
                 </b-col>
             </b-row>
         </b-container>
@@ -23,14 +28,14 @@
 
 <script>
     import EditCD from "@/components/EditCD";
-    import Header from "@/components/Header";
+    import HeaderT from "@/components/HeaderT";
     import ShowCD from "@/components/ShowCD";
     import { mapState, mapActions } from 'vuex';
-
+    import router from "@/router";
     export default {
         name: 'CD',
         components: {
-            Header,
+            HeaderT,
             EditCD,
             ShowCD
         },
@@ -53,7 +58,10 @@
 
             toggleEdit: function () {
                 this.edit = !this.edit
-            }
+            },
+            cancelAction: function () {
+                router.push({path: `/home`});
+            } 
         }
     }
 </script>

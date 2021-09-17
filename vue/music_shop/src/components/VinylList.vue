@@ -1,18 +1,31 @@
 <template>
-    <div>
-        <b-table
-                hover v-if="vinyls.length"
-                sticky-header="800px"
-                :items="vinyls"
-                :fields="fields"
-                head-variant="light"
-                @row-clicked="editVinyl">
-            <template v-slot:cell(delete)="row">
-                <b-button v-if="admin == false" variant="danger" @click="delete_vinyl(row.item.id)">Delete</b-button>
-            </template>
-        </b-table>
-        <h1 v-else>No vinyls to show</h1>
-    </div>
+    <table class="table table-dark table-striped">
+        <thead style="background: black">
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Artist</th>
+         <th scope="col">Label</th>
+         <th scope="col"></th>
+       </tr>
+      </thead>
+
+        <tbody>
+        <tr v-for="vinyl in vinyls" >         
+            <td @click="editVinyl(vinyl)">
+              {{ vinyl.title }}
+            </td>
+          <td @click="editVinyl(vinyl)">
+            {{ vinyl.artist }}
+          </td>
+          <td @click="editVinyl(vinyl)">
+            {{ vinyl.label }}
+          </td>
+          <td>
+            <button v-if="admin==true" @click="delete_vinyl(vinyl.id)" type="button" class="btn btn-danger">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
 </template>
 
 <script>
@@ -37,9 +50,9 @@
             ...mapActions(['delete_vinyl']),
 
             editVinyl: function (item, index, event) {
-                if(this.admin == true){
+                //if(this.admin == true){
                   router.push({path: `/vinyl/${item.id}`});
-                }
+                //}
 
             }
         }
@@ -48,6 +61,6 @@
 
 <style>
     tr:hover td{
-        background: mediumvioletred;
+        background: aqua;
     }
 </style>

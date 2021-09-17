@@ -8,8 +8,8 @@ const path = require('path');
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET", "PUT", "POST", "DELETE", "OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "*");
+    res.header("Access-Control-Allow-Headers", "*");
     next();
 });
 
@@ -17,12 +17,12 @@ app.use(function(req, res, next) {
 app.use('/api', disks);
 
 
-//const staticMiddleware = express.static(path.join(__dirname, 'dist'));
+const staticMiddleware = express.static(path.join(__dirname, 'dist'));
 
 
 
-//app.use(staticMiddleware);
+app.use(staticMiddleware);
 app.use(history());
-//app.use(staticMiddleware);
+app.use(staticMiddleware);
 
 app.listen(port);

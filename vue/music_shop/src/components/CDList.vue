@@ -1,18 +1,31 @@
 <template>
-  <div>
-    <b-table
-        hover v-if="cds.length"
-        sticky-header="800px"
-        :items="cds"
-        :fields="fields"
-        head-variant="light"
-        @row-clicked="editCD">
-      <template v-if="admin==true" v-slot:cell(delete)="row">
-          <b-button variant="danger" @click="delete_cd(row.item.id)">Delete</b-button>
-      </template>
-    </b-table>
-    <h1 v-else>No CDs to show</h1>
-  </div>
+    <table class="table table-dark table-striped">
+        <thead style="background: black">
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Artist</th>
+         <th scope="col">Label</th>
+         <th scope="col"></th>
+       </tr>
+      </thead>
+
+        <tbody>
+        <tr v-for="cd in cds" >         
+            <td @click="editCD(cd)">
+              {{ cd.title }}
+            </td>
+          <td @click="editCD(cd)">
+            {{ cd.artist }}
+          </td>
+          <td @click="editCD(cd)">
+            {{ cd.label }}
+          </td>
+          <td>
+            <button v-if="admin==true" @click="delete_cd(cd.id)" type="button" class="btn btn-danger">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
 </template>
 
 <script>
@@ -36,11 +49,11 @@ export default {
   methods: {
     ...mapActions(['delete_cd']),
 
-    editCD: function (item, index, event) {
-      if(this.admin == true){
-        router.push({path: `/cd/${item.id}`});
-      }
-
+    editCD: function (item) {
+      //if(this.admin == true){
+          router.push({path: `/cd/${item.id}`});
+      //}
+    
     }
   }
 }
