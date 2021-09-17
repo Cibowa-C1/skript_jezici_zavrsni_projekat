@@ -5,7 +5,7 @@
             <b-row>
                 <b-col cm="6" >
                     <div v-if="edit">
-                        <EditCD :title="cd.title" :artist="cd.artist" :label="cd.label"/>
+                        <EditCD :title="cd.title" :artist="cd.artist" :rating="cd.rating"/>
                     </div>
                     <div v-else>
                         <ShowCD v-if="cds.length" :cd="cd"/>

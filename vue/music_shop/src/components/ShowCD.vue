@@ -3,7 +3,7 @@
     <b-container fluid>
         <b-row>
             <b-col sm="2">
-                <label for="title">Title:</label>
+                <rating for="title">Title:</rating>
             </b-col>
             <b-col sm="10">
                 <p id="title" style="text-align: left">{{ cd.title }}</p>
@@ -12,7 +12,7 @@
 
         <b-row class="mt-2">
             <b-col sm="2">
-                <label for="artist">Artist:</label>
+                <rating for="artist">Artist:</rating>
             </b-col>
             <b-col sm="10">
                 <p id="Artist" style="text-align: left">{{ cd.artist }}</p>
@@ -21,10 +21,10 @@
 
       <b-row class="mt-2">
         <b-col sm="2">
-          <label for="label">Label:</label>
+          <rating for="rating">Rating:</rating>
         </b-col>
         <b-col sm="10">
-          <p id="label" style="text-align: left">{{ cd.label }}</p>
+          <p id="rating" style="text-align: left">{{ cd.rating }}</p>
         </b-col>
       </b-row>
 

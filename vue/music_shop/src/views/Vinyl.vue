@@ -5,7 +5,7 @@
             <b-row>
                 <b-col cm="6" >
                     <div v-if="edit">
-                        <EditVinyl :title="vinyl.title" :artist="vinyl.artist" :label="vinyl.label"/>
+                        <EditVinyl :title="vinyl.title" :artist="vinyl.artist" :rating="vinyl.rating"/>
                     </div>
                     <div v-else>
                         <ShowVinyl v-if="vinyls.length" :vinyl="vinyl"/>
